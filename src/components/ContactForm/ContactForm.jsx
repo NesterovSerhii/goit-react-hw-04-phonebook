@@ -1,32 +1,32 @@
-import { Component } from "react"
+import { useState } from 'react';
 import styled from './ContactForm.module.css'
 
-export class ContactForm extends Component {
-  state = {
-    name: '',
-    number: '',
-  };
+export const ContactForm = ({ onSubmit }) => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-  handleChange = (event) => {
+   const handleChange = (event) => {
     const { name, value } = event.target;
-    this.setState({ [name]: value });
+    if (name === 'name') {
+      setName(value);
+    } else if (name === 'number') {
+      setNumber(value);
+    }
   };
 
-  handleSubmit = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    const { name, number } = this.state;
-    this.props.onSubmit(name, number);
-    this.setState({ name: '', number: '' });
+    onSubmit({ name, number });
+    setName('');
+    setNumber('');
   };
-    
-    render() {
-        const { name, number } = this.state;
+
         return (
             <>
-            <form className={styled.form} onSubmit={this.handleSubmit}>
+            <form className={styled.form} onSubmit={handleSubmit}>
               <label className={styled.label} htmlFor="name">
                 Name
-                <input className={styled.input} onChange={this.handleChange}
+                <input className={styled.input} onChange={handleChange}
                     type="text"
                     value={name}
                   name="name"
@@ -36,7 +36,7 @@ export class ContactForm extends Component {
                 </label>
               <label className={styled.label} htmlFor="number">
                 Number
-                <input className={styled.input} onChange={this.handleChange}
+                <input className={styled.input} onChange={handleChange}
                   type="tel"
                   value={number}
                   name="number"
@@ -49,8 +49,4 @@ export class ContactForm extends Component {
                 </form>
                 </>
         )
-    }
 }
-
-
-
